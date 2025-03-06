@@ -1,44 +1,42 @@
 import React, { useEffect } from 'react'
-import Navbar from './Components/Navbar'
-import { Routes, Route } from 'react-router-dom'
-import HomePage from './Pages/HomePage'
-import LoginPage from './Pages/LoginPage'
-import ProfilPage from './Pages/ProfilPage'
-import SignupPage from './Pages/SignupPage'
-import SettingsPage from './Pages/SettingsPage'
+import Navbar from './components/Navbar'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import ProfilePage from './pages/ProfilePage'
+import Settings from './pages/Settings'
 import { useAuthStore } from './store/useAuthStore'
-import { LuLoaderCircle } from "react-icons/lu"
-import { Navigate } from 'react-router-dom'
+import { FaSpinner } from "react-icons/fa";
+import { Toaster } from "react-hot-toast"
+
 
 const App = () => {
 
+  const {authUser, checkAuth, isCheckingAuth} = useAuthStore()
 
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  useEffect(() => {checkAuth()}, [checkAuth]);
 
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-  console.log({ authUser })
+  console.log({authUser});
 
   if (isCheckingAuth && !authUser) return (
-    <div className='"flex items-center justify-center h-screen"'>
-      <LuLoaderCircle className="size-10 animate-spin"/>
+    <div className='h-screen w-screen flex items-center'>
+      <FaSpinner className='size-16 animate-spin m-auto'/>
     </div>
   )
 
   return (
     <div>
-
-      <Navbar/>
-
+        <Navbar />
       <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login"/>}> </Route>
-        <Route path="/signup" element={!authUser ? <SignupPage /> : <HomePage />}> </Route>
-        <Route path="/login" element={!authUser ? <LoginPage /> : <HomePage />}> </Route>
-        <Route path="/settings" element={authUser ? <SettingsPage /> : <Navigate to="/login"/>}> </Route>
-        <Route path="/profile" element={authUser ? <ProfilPage /> : <Navigate to="/login"/>}> </Route>
+        <Route path="/" element={authUser ? <Home /> : <Navigate to="/signup" />}></Route>
+        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/"/>}></Route>
+        <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/"/>}></Route>
+        <Route path="/profile" element={<ProfilePage/>}></Route>
+        <Route path="/settings" element={<Settings />}></Route>
       </Routes>
 
+      <Toaster />
     </div>
   )
 }
