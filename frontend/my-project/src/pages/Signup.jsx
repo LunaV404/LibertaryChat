@@ -12,7 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: "",
+    fullName: "",
     email: "",
     password: ""
   });
@@ -21,7 +21,7 @@ const Signup = () => {
   const { signup, isSigningUp } = useAuthStore();
 
   const validateForm = () => {
-    if (!formData.username.trim()) return toast.error("Username is required");
+    if (!formData.fullName.trim()) return toast.error("Username is required");
     if (!formData.email.trim()) return toast.error("Email is required");
     if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid format email")
     if (!formData.password.trim()) return toast.error("Password is required");
@@ -64,9 +64,9 @@ const Signup = () => {
                 <input
                   type="text"
                   placeholder="Username"
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   className="w-full outline-none bg-transparent"
-                  value={formData.username}
+                  value={formData.fullName}
                 />
               </div>
 
@@ -111,7 +111,7 @@ const Signup = () => {
                     Submitting...
                   </div>
                 ) : (
-                "Submit"
+                "Create an account"
                 )}
             </button>
           {/* End Submit Button */}
